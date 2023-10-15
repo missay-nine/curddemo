@@ -1,0 +1,92 @@
+syntax = "proto3";
+package note;
+option go_package = "notedemo";
+
+// BaseResp 定义
+message BaseResp {
+  int64 status_code = 1;
+  string status_message = 2;
+  int64 service_time = 3;
+}
+
+// Note 定义
+message Note {
+  int64 note_id = 1;
+  int64 user_id = 2;
+  string user_name = 3;
+  string user_avatar = 4;
+  string title = 5;
+  string content = 6;
+  int64 create_time = 7;
+}
+
+// CreateNoteRequest 定义
+message CreateNoteRequest {
+  string title = 1;
+  string content = 2;
+  int64 user_id = 3;
+}
+
+// CreateNoteResponse 定义
+message CreateNoteResponse {
+  BaseResp base_resp = 1;
+}
+
+// DeleteNoteRequest 定义
+message DeleteNoteRequest {
+  int64 note_id = 1;
+  int64 user_id = 2;
+}
+
+// DeleteNoteResponse 定义
+message DeleteNoteResponse {
+  BaseResp base_resp = 1;
+}
+
+// UpdateNoteRequest 定义
+message UpdateNoteRequest {
+  int64 note_id = 1;
+  int64 user_id = 2;
+  string title = 3;
+  string content = 4;
+}
+
+// UpdateNoteResponse 定义
+message UpdateNoteResponse {
+  BaseResp base_resp = 1;
+}
+
+// MGetNoteRequest 定义
+message MGetNoteRequest {
+  repeated int64 note_ids = 1;
+}
+
+// MGetNoteResponse 定义
+message MGetNoteResponse {
+  repeated Note notes = 1;
+  BaseResp base_resp = 2;
+}
+
+// QueryNoteRequest 定义
+message QueryNoteRequest {
+  int64 user_id = 1;
+  string search_key = 2;
+  int64 offset = 3;
+  int64 limit = 4;
+}
+
+// QueryNoteResponse 定义
+message QueryNoteResponse {
+  repeated Note notes = 1;
+  int64 total = 2;
+  BaseResp base_resp = 3;
+}
+
+// NoteService 定义
+service NoteService {
+  rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse);
+  rpc MGetNote(MGetNoteRequest) returns (MGetNoteResponse);
+  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse);
+  rpc QueryNote(QueryNoteRequest) returns (QueryNoteResponse);
+  rpc UpdateNote(UpdateNoteRequest) returns (UpdateNoteResponse);
+}
